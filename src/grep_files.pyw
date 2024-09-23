@@ -1,10 +1,17 @@
-from sys import exit, argv
-from PySide6.QtWidgets import *
+import sys
 from typing import List
+from PySide6.QtWidgets import (
+    QApplication, QDialog, QLabel, QPushButton, QHBoxLayout
+    , QVBoxLayout, QLineEdit, QListWidget
+)
 
 class GrepFiles(QDialog):
+    Backed = 2
+    # SelectFileManager.Accepted（1）: 正常終了
+    # SelectFileManager.Rejected（0）：異常終了
     def __init__(self, file_list: List[str], parent=None):
-        super(GrepFiles, self).__init__(parent)
+        super().__init__(parent)
+        self.regex = ""
 
         # Title
         self.setWindowTitle("正規表現マッチ抽出")
@@ -25,6 +32,7 @@ class GrepFiles(QDialog):
 
         # Button
         self.button_back = QPushButton("戻る")
+        self.button_back.clicked.connect(self.button_back_event)
         self.button_next = QPushButton("決定")
         self.button_next.setDisabled(True)
         self.button_next.clicked.connect(self.button_next_event)
@@ -57,4 +65,18 @@ class GrepFiles(QDialog):
         """次へボタンのイベント
         """
         self.regex = self.line_edit_regex.text()
-        self.accept()           # 閉じる
+        self.accept()
+
+    def button_back_event(self):
+        """戻るボタンのイベント
+        """
+        self.regex = ""
+        self.done(GrepFiles.Backed)
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+
+    dialog = GrepFiles(sys.argv[1:])
+    dialog.show()
+    print(dialog.exec())
+    sys.exit()

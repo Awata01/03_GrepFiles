@@ -1,7 +1,7 @@
 import sys
 from sys import path, argv
 import os
-from dataclasses import dataclass   
+from dataclasses import dataclass
 import tempfile
 import csv
 import platform
@@ -14,7 +14,7 @@ path.append(r"C:\Users\awata\Awata01\Programming\01_FolderManager\src")
 from select_file_manager import SelectFileManager
 from grep_files import GrepFiles
 
-def Main():
+def Main() -> None:
     """複数のファイルから正規表現でマッチした部分を抽出し、一時CSVファイルに出力する
     """
     logger = CustomLogging("grep_files_main")
@@ -50,9 +50,9 @@ def Main():
         file_name: str
         match_str: str
         file_path: str
-        
-    
-    
+
+
+
     # ヘッダー
     fieldnames = ["file_name", f"match_str", "file_path"]
 
